@@ -18,6 +18,10 @@ inputs:
     description: 'Optional additional arguments to `tailscale up`'
     required: false
     default: ''
+  tailscale_args:
+    description: 'Optional additional arguments to `tailscale`'
+    required: false
+    default: ''
   tailscaled_args:
     description: 'Optional additional arguments to `tailscaled`'
     required: false
@@ -48,7 +52,8 @@ runs:
           TAILSCALE_AUTHKEY: ${{ inputs.authkey }}
           ADDITIONAL_ARGS: ${{ inputs.args }}
           TAILSCALED_ARGS: ${{ inputs.tailscaled_args }}
+          TAILSCALE_ARGS: ${{ inputs.tailscale_args }}
         run: |
           sudo tailscaled ${TAILSCALED_ARGS} 2>~/tailscaled.log &
           HOSTNAME="github-$(cat /etc/hostname)"
-          sudo tailscale up --authkey ${TAILSCALE_AUTHKEY} --hostname=${HOSTNAME} --accept-routes ${ADDITIONAL_ARGS}
+          sudo tailscale ${TAILSCALE_ARGS}  up --authkey ${TAILSCALE_AUTHKEY} --hostname=${HOSTNAME} --accept-routes ${ADDITIONAL_ARGS}
